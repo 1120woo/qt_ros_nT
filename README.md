@@ -1,3 +1,3 @@
 # qt_ros_nT
 qt_create with No Templates
-for melodic, ros1
+for noetic, ros1
