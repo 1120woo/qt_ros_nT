@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from optparse import OptionParser
 from qt_create import create_qt_ros_catkin_package
@@ -16,6 +16,6 @@ if __name__ == "__main__":
     depends = ''.join(['  <build_depend>{0}</build_depend>\n  <run_depend>{0}</run_depend>\n' .format(d) for d in depends])
 
     create_qt_ros_catkin_package(package, depends )
-    print("\nPlease edit %s/package.xml and mainpage.dox to finish creating your package",package)
+    print("\nPlease edit %s/package.xml and mainpage.dox to finish creating your package" % package)
 
 
