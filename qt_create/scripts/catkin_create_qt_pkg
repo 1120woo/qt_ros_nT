@@ -1,21 +1,28 @@
 #!/usr/bin/env python3
 
-from optparse import OptionParser
+from argparse import ArgumentParser
 from qt_create import create_qt_ros_catkin_package
 
+
+def main():
+    parser = ArgumentParser(usage="usage: %prog <package-name> [dependencies...]")
+    parser.add_argument("package_name", help="The name of the package to create")
+    parser.add_argument("dependencies", nargs="*", help="The names of the packages that this package depends on")
+    args = parser.parse_args()
+
+    # Check that the package name is valid.
+    if not args.package_name:
+        parser.error("You must specify a package name.")
+
+    # Check that the dependencies are valid.
+    for dependency in args.dependencies:
+        if not dependency:
+            parser.error("You must specify a dependency name.")
+
+    # Create the package.
+    create_qt_ros_catkin_package(args.package_name, args.dependencies)
+    print("\nPlease edit {}/package.xml and mainpage.dox to finish creating your package".format(args.package_name))
+
+
 if __name__ == "__main__":
-    parser = OptionParser(usage="usage: %prog <package-name> [dependencies...]")
-    options, args = parser.parse_args()
-    if not args:
-        parser.error("you must specify a package name and optionally also list package dependencies")
-    package = args[0]
-
-    # no checking dependencies like old roscreate-pkg did
-    # since we are usually not in a shell
-    depends = args[1:]
-    depends = ''.join(['  <build_depend>{0}</build_depend>\n  <run_depend>{0}</run_depend>\n' .format(d) for d in depends])
-
-    create_qt_ros_catkin_package(package, depends )
-    print("\nPlease edit %s/package.xml and mainpage.dox to finish creating your package" % package)
-
-
+    main()
