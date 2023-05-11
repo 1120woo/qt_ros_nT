@@ -13,7 +13,7 @@ def author_name():
     try:
         import pwd
         login = name
-        name = pwd.getpwnam(login)[4]
+        name = pwd.getpwnam(login).pw_name
         name = ''.join(name.split(',')) # strip commas
         # in case pwnam is not set
         if not name:
@@ -27,14 +27,11 @@ def author_name():
 
 # Finds and reads one of the templates.
 def read_template(tmplf):
-    f = open(tmplf, 'r')
-    try:
+    with open(tmplf, 'r') as f:
         t = f.read()
-    finally:
-        f.close()
     return t
 
 # This inserts the labelled variables into the template wherever the corresponding
 # %package, %brief, %description and %depends is found.
 def instantiate_template(template, package, description, author, depends):
-    return template%locals()
+    return template.format(package=package, description=description, author=author, depends=depends)
